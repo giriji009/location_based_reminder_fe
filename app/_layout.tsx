@@ -1,39 +1,40 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+// // app/index.js or app/_layout.js
+// import React from 'react';
+// import { StatusBar } from 'expo-status-bar';
+// import { SafeAreaProvider } from 'react-native-safe-area-context';
+// import { AuthProvider } from '../src/context/AuthContext';
+// import { AppNavigator } from '../src/navigation/AppNavigator';
+
+// export default function AppLayout() {
+//   return (
+//     <SafeAreaProvider>
+//       <AuthProvider>
+//         <AppNavigator />
+//         <StatusBar style="auto" />
+//       </AuthProvider>
+//     </SafeAreaProvider>
+//   );
+// }
+
+
+// app/_layout.tsx
+import React from 'react';
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AuthProvider } from '../src/context/AuthContext';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <Stack 
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+        <StatusBar style="auto" />
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
